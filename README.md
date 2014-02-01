@@ -2,6 +2,9 @@
 
 An Express middleware for quick'n'easy server-sent events.
 
+##Installation:
+`npm install express-sse`
+
 ##Usage example:
 ###Server:
 ```
