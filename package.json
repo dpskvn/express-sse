@@ -1,0 +1,28 @@
+{
+  "name": "express-sse",
+  "version": "0.1.0",
+  "description": "An Express middleware for Server-Sent Events (EventSource)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dpskvn/express-sse.git"
+  },
+  "keywords": [
+    "express",
+    "sse",
+    "server-sent",
+    "events",
+    "eventsource",
+    "middleware",
+    "stream"
+  ],
+  "author": "Dino Paskvan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dpskvn/express-sse/issues"
+  },
+  "homepage": "https://github.com/dpskvn/express-sse"
+}
