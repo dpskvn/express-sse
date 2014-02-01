@@ -9,7 +9,7 @@ An Express middleware for quick'n'easy server-sent events.
 ###Server:
 ```
 var SSE = require('express-sse');
-var sse = new SSE();
+var sse = new SSE(["array", "containing", "initial", "content", "(optional)"]);
 
 ...
 
@@ -18,6 +18,7 @@ app.get('/stream', sse.init);
 ...
 
 sse.send(content);
+sse.updateInit(["array", "containing", "new", "initial", "content"]);
 ```
 
 ###Client:
