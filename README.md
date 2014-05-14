@@ -1,5 +1,7 @@
 #event-stream
 
+[![NPM](https://nodei.co/npm/express-sse.png?downloads=true)](https://nodei.co/npm/express-sse/)
+
 An Express middleware for quick'n'easy server-sent events.
 
 ##Installation:
