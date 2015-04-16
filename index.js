@@ -21,7 +21,7 @@ var SSE = function(initial) {
 
   this.init = function(req, res) {
     var id = 0;
-    req.socket.setTimeout(Infinity);
+    req.socket.setTimeout(Number.MAX_SAFE_INTEGER || Infinity);
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
