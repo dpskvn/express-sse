@@ -20,7 +20,7 @@ app.get('/stream', sse.init);
 ...
 
 sse.send(content);
-sse.updateInit(["array", "containing", "new", "initial", "content"]);
+sse.updateInit(["array", "containing", "new", "content"]);
 ```
 
 ###Client:
