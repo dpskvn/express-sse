@@ -32,11 +32,12 @@ class SSE extends EventEmitter {
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
     if (this.initial) {
-      for (let i = 0; i < this.initial.length; i++) {
-        res.write(`id: ${id}\n`);
-        res.write(`data: ${JSON.stringify(this.initial[i])}\n\n`);
+      let initialSend = '';
+      this.initial.forEach((el, i) => {
+        initialSend += `id: ${id}\ndata: ${JSON.stringify(this.initial[i])}\n\n`;
         id += 1;
-      }
+      });
+      res.write(initialSend);
     }
     this.on('data', data => {
       if (data.id) {
