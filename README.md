@@ -13,7 +13,7 @@ An Express middleware for quick'n'easy server-sent events.
 
 ## Usage example:
 ### Server:
-```
+```js
 var SSE = require('express-sse');
 var sse = new SSE(["array", "containing", "initial", "content", "(optional)"]);
 
@@ -30,7 +30,7 @@ sse.updateInit(["array", "containing", "new", "content"]);
 ```
 
 ### Client:
-```
+```js
 var es = new EventSource('/stream');
 
 es.onmessage = function (event) {
