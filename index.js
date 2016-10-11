@@ -16,7 +16,7 @@ class SSE extends EventEmitter {
   constructor(initial = []) {
     super();
 
-    this.initial = initial;
+    this.initial = Array.isArray(initial) ? initial : [initial]; 
 
     this.init = this.init.bind(this);
   }
@@ -58,7 +58,7 @@ class SSE extends EventEmitter {
    * @param {array} data array containing data to be served on new connections
    */
   updateInit(data) {
-    this.initial = data;
+    this.initial = Array.isArray(data) ? data : [data];
   }
 
   /**
