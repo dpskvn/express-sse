@@ -12,11 +12,13 @@ class SSE extends EventEmitter {
   /**
    * Creates a new Server-Sent Event instance
    * @param [array] initial Initial value(s) to be served through SSE
+   * @param [object] options Options for SSE.
    */
-  constructor(initial = []) {
+  constructor(initial = [], options = { isQueue: true }) {
     super();
 
-    this.initial = Array.isArray(initial) ? initial : [initial]; 
+    this.initial = Array.isArray(initial) ? initial : [initial];
+    this.options = options;
 
     this.init = this.init.bind(this);
   }
@@ -46,10 +48,15 @@ class SSE extends EventEmitter {
     });
 
     if (this.initial) {
-      id = this.initial.reduce((msgId, data) => {
-        this.send(data, null, msgId);
-        return msgId + 1;
-      }, id);
+      if(this.options.isQueue) {
+        id = this.initial.reduce((msgId, data) => {
+          this.send(data, null, msgId);
+          return msgId + 1;
+        }, id);
+      } else {
+        this.send(this.initial, null, id);
+        id += 1;
+      }
     }
   }
 
