@@ -31,14 +31,7 @@ class SSE extends EventEmitter {
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
-    if (this.initial) {
-      let initialSend = '';
-      this.initial.forEach((el, i) => {
-        initialSend += `id: ${id}\ndata: ${JSON.stringify(this.initial[i])}\n\n`;
-        id += 1;
-      });
-      res.write(initialSend);
-    }
+
     this.on('data', data => {
       if (data.id) {
         res.write(`id: ${data.id}\n`);
@@ -51,6 +44,13 @@ class SSE extends EventEmitter {
       }
       res.write(`data: ${JSON.stringify(data.data)}\n\n`);
     });
+
+    if (this.initial) {
+      id = this.initial.reduce((msgId, data) => {
+        this.send(data, null, msgId);
+        return msgId + 1;
+      }, id);
+    }
   }
 
   /**
