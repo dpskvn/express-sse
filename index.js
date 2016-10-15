@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Require the module dependencies
  */
@@ -13,10 +15,14 @@ class SSE extends EventEmitter {
    * Creates a new Server-Sent Event instance
    * @param [array] initial Initial value(s) to be served through SSE
    */
-  constructor(initial = []) {
+  constructor(initial) {
     super();
 
-    this.initial = Array.isArray(initial) ? initial : [initial]; 
+    if (initial) {
+      this.initial = Array.isArray(initial) ? initial : [initial];
+    } else {
+      this.initial = [];
+    }
 
     this.init = this.init.bind(this);
   }
