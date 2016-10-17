@@ -14,14 +14,21 @@ class SSE extends EventEmitter {
   /**
    * Creates a new Server-Sent Event instance
    * @param [array] initial Initial value(s) to be served through SSE
+   * @param [object] options Options for SSE.
    */
-  constructor(initial) {
+  constructor(initial, options) {
     super();
 
     if (initial) {
       this.initial = Array.isArray(initial) ? initial : [initial];
     } else {
       this.initial = [];
+    }
+    
+    if (options) {
+      this.options = options;
+    } else {
+      this.options = { isQueue: true };
     }
 
     this.init = this.init.bind(this);
@@ -37,14 +44,7 @@ class SSE extends EventEmitter {
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
-    if (this.initial) {
-      let initialSend = '';
-      this.initial.forEach((el, i) => {
-        initialSend += `id: ${id}\ndata: ${JSON.stringify(this.initial[i])}\n\n`;
-        id += 1;
-      });
-      res.write(initialSend);
-    }
+
     this.on('data', data => {
       if (data.id) {
         res.write(`id: ${data.id}\n`);
@@ -57,6 +57,18 @@ class SSE extends EventEmitter {
       }
       res.write(`data: ${JSON.stringify(data.data)}\n\n`);
     });
+
+    if (this.initial) {
+      if(this.options.isQueue) {
+        id = this.initial.reduce((msgId, data) => {
+          this.send(data, null, msgId);
+          return msgId + 1;
+        }, id);
+      } else {
+        this.send(this.initial, null, id);
+        id += 1;
+      }
+    }
   }
 
   /**
