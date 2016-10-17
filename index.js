@@ -37,14 +37,10 @@ class SSE extends EventEmitter {
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
-    if (this.initial) {
-      let initialSend = '';
-      this.initial.forEach((el, i) => {
-        initialSend += `id: ${id}\ndata: ${JSON.stringify(this.initial[i])}\n\n`;
-        id += 1;
-      });
-      res.write(initialSend);
-    }
+
+    // Increase number of event listeners on init
+    this.setMaxListeners(this.getMaxListeners() + 2);
+
     this.on('data', data => {
       if (data.id) {
         res.write(`id: ${data.id}\n`);
@@ -56,6 +52,26 @@ class SSE extends EventEmitter {
         res.write(`event: ${data.event}\n`);
       }
       res.write(`data: ${JSON.stringify(data.data)}\n\n`);
+    });
+
+    this.on('serialize', data => {
+      let serializeSend = '';
+      data.forEach(el => {
+        serializeSend += `id: ${id}\ndata: ${JSON.stringify(el)}\n\n`;
+        id += 1;
+      });
+      res.write(serializeSend);
+    });
+
+    if (this.initial) {
+      this.serialize(this.initial);
+    }
+
+    // Remove listeners and reduce the number of max listeners on client disconnect
+    req.on('close', () => {
+      this.removeAllListeners('data');
+      this.removeAllListeners('serialize');
+      this.setMaxListeners(this.getMaxListeners() - 2);
     });
   }
 
@@ -75,6 +91,14 @@ class SSE extends EventEmitter {
    */
   send(data, event, id) {
     this.emit('data', {data, event, id});
+  }
+
+  serialize(data) {
+    if (Array.isArray(data)) {
+      this.emit('serialize', data);
+    } else {
+      this.send(data);
+    }
   }
 }
 
