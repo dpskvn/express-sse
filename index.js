@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Require the module dependencies
  */
@@ -14,16 +16,24 @@ class SSE extends EventEmitter {
    * @param [array] initial Initial value(s) to be served through SSE
    * @param [object] options Options for SSE.
    */
-  constructor(initial = [], options = { isQueue: true, autoQueue: false, queueLength: 10 }) {
+  constructor(initial, options) {
     super();
 
-    if(options.autoQueue) {
-      options.isQueue = true;
-      options.queueLength = typeof options.queueLength !== 'undefined' ? options.queueLength : 10;
+    if (initial) {
+      this.initial = Array.isArray(initial) ? initial : [initial];
+    } else {
+      this.initial = [];
     }
-
-    this.initial = Array.isArray(initial) ? initial : [initial];
-    this.options = options;
+    
+    if (options) {
+      if(options.autoQueue) {
+        options.isQueue = true;
+        options.queueLength = typeof options.queueLength !== 'undefined' ? options.queueLength : 10;
+      }
+      this.options = options;
+    } else {
+      this.options = { isQueue: true, autoQueue: false };
+    }
 
     this.init = this.init.bind(this);
   }
