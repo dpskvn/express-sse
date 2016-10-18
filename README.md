@@ -1,6 +1,8 @@
 event-stream
 ============
 
+[![Build Status](https://travis-ci.org/dpskvn/express-sse.svg?branch=master)](https://travis-ci.org/dpskvn/express-sse)
+
 [![NPM](https://nodei.co/npm/express-sse.png?downloads=true)](https://nodei.co/npm/express-sse/)
 
 An Express middleware for quick'n'easy server-sent events.
