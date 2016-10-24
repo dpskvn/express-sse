@@ -106,7 +106,7 @@ describe('express-sse', () => {
     };
   });
 
-  it('should serialize initial data', done => {
+  it('should serialize initial data by default (isSerialized = true)', done => {
     const sse = new SSE([1, 2, 3, 4, 5]);
     app.get('/', sse.init);
 
@@ -120,6 +120,19 @@ describe('express-sse', () => {
         es.close();
         done();
       }
+    };
+  });
+
+  it('should send initial data as array if isSerialized is false', done => {
+    const sse = new SSE([1, 2, 3, 4, 5], {isSerialized: false});
+    app.get('/', sse.init);
+
+    const es = new EventSource('http://localhost:3000/');
+
+    es.onmessage = e => {
+      e.data.should.equal(JSON.stringify([1, 2, 3, 4, 5]));
+      es.close();
+      done();
     };
   });
 });

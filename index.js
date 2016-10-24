@@ -61,7 +61,7 @@ class SSE extends EventEmitter {
     });
 
     this.on('serialize', data => {
-      let serializeSend = data.reduce((all, msg) => {
+      const serializeSend = data.reduce((all, msg) => {
         all += `id: ${id}\ndata: ${JSON.stringify(msg)}\n\n`;
         id += 1;
         return all;
@@ -70,7 +70,7 @@ class SSE extends EventEmitter {
     });
 
     if (this.initial) {
-      if(this.options.isSerialized) {
+      if (this.options.isSerialized) {
         this.serialize(this.initial);
       } else {
         this.send(this.initial, this.options.initialEvent || false);
@@ -100,9 +100,13 @@ class SSE extends EventEmitter {
    * @param [(string|number)] id Custom event ID
    */
   send(data, event, id) {
-    this.emit('data', {data, event, id});
+    this.emit('data', { data, event, id });
   }
 
+  /**
+   * Send serialized data to the SSE
+   * @param {array} data Data to be serialized as a series of events
+   */
   serialize(data) {
     if (Array.isArray(data)) {
       this.emit('serialize', data);
