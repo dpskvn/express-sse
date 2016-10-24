@@ -27,6 +27,9 @@
   "homepage": "https://github.com/dpskvn/express-sse",
   "devDependencies": {
     "chai": "^3.5.0",
+    "eslint": "^3.8.1",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-plugin-mocha": "^4.7.0",
     "eventsource": "^0.2.1",
     "express": "^4.14.0",
     "mocha": "^3.1.2"

@@ -93,6 +93,23 @@ describe('express-sse', () => {
     };
   });
 
+  it('should send a single event if a non-array is passed to serialize', done => {
+    const sse = new SSE();
+    app.get('/stream', sse.init);
+
+    const es = new EventSource('http://localhost:3000/stream');
+
+    setTimeout(() => {
+      sse.serialize('test message');
+    }, 500);
+
+    es.onmessage = e => {
+      JSON.parse(e.data).should.equal('test message');
+      es.close();
+      done();
+    };
+  });
+
   it('should serve initial data', done => {
     const sse = new SSE('initial message');
     app.get('/', sse.init);
@@ -124,8 +141,23 @@ describe('express-sse', () => {
   });
 
   it('should send initial data as array if isSerialized is false', done => {
-    const sse = new SSE([1, 2, 3, 4, 5], {isSerialized: false});
+    const sse = new SSE([1, 2, 3, 4, 5], { isSerialized: false });
     app.get('/', sse.init);
+
+    const es = new EventSource('http://localhost:3000/');
+
+    es.onmessage = e => {
+      e.data.should.equal(JSON.stringify([1, 2, 3, 4, 5]));
+      es.close();
+      done();
+    };
+  });
+
+  it('should be able to update initial data', done => {
+    const sse = new SSE(null, { isSerialized: false });
+    app.get('/', sse.init);
+
+    sse.updateInit([1, 2, 3, 4, 5]);
 
     const es = new EventSource('http://localhost:3000/');
 
