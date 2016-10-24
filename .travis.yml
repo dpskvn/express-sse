@@ -3,3 +3,12 @@ node_js:
   - "6"
   - "5"
   - "4"
+
+before_script:
+- npm install -g istanbul
+- npm install -g mocha
+- npm install -g codeclimate-test-reporter
+
+after_success:
+  - istanbul cover _mocha -- -R spec ./test/*.js
+  - codeclimate < ./coverage/lcov.info

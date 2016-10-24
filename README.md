@@ -1,7 +1,7 @@
 express-sse
 ============
 
-[![Build Status](https://travis-ci.org/dpskvn/express-sse.svg?branch=master)](https://travis-ci.org/dpskvn/express-sse)  [![Code Climate](https://codeclimate.com/github/dpskvn/express-sse/badges/gpa.svg)](https://codeclimate.com/github/dpskvn/express-sse)
+[![Build Status](https://travis-ci.org/dpskvn/express-sse.svg?branch=master)](https://travis-ci.org/dpskvn/express-sse)  [![Code Climate](https://codeclimate.com/github/dpskvn/express-sse/badges/gpa.svg)](https://codeclimate.com/github/dpskvn/express-sse)  [![Test Coverage](https://codeclimate.com/github/dpskvn/express-sse/badges/coverage.svg)](https://codeclimate.com/github/dpskvn/express-sse/coverage)
 
 [![NPM](https://nodei.co/npm/express-sse.png?downloads=true)](https://nodei.co/npm/express-sse/)
 
