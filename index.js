@@ -15,13 +15,19 @@ class SSE extends EventEmitter {
    * Creates a new Server-Sent Event instance
    * @param [array] initial Initial value(s) to be served through SSE
    */
-  constructor(initial) {
+  constructor(initial, options) {
     super();
 
     if (initial) {
       this.initial = Array.isArray(initial) ? initial : [initial];
     } else {
       this.initial = [];
+    }
+
+    if (options) {
+      this.options = options;
+    } else {
+      this.options = { isSerialized: true };
     }
 
     this.init = this.init.bind(this);
@@ -55,16 +61,20 @@ class SSE extends EventEmitter {
     });
 
     this.on('serialize', data => {
-      let serializeSend = '';
-      data.forEach(el => {
-        serializeSend += `id: ${id}\ndata: ${JSON.stringify(el)}\n\n`;
+      let serializeSend = data.reduce((all, msg) => {
+        all += `id: ${id}\ndata: ${JSON.stringify(msg)}\n\n`;
         id += 1;
-      });
+        return all;
+      }, '');
       res.write(serializeSend);
     });
 
     if (this.initial) {
-      this.serialize(this.initial);
+      if(this.options.isSerialized) {
+        this.serialize(this.initial);
+      } else {
+        this.send(this.initial, this.options.initialEvent || false);
+      }
     }
 
     // Remove listeners and reduce the number of max listeners on client disconnect
