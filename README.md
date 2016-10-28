@@ -22,7 +22,7 @@ or
 You can pass an optional options object to the constructor. Currently it only supports changing the way initial data is treated. If you set `isSerialized` to `false`, the initial data is sent as a single event. The default value is `true`.
 
 ```js
-var sse = new SSE(["array", "containing", "initial", "content", "(optional)"], { isSerialized: false });
+var sse = new SSE(["array", "containing", "initial", "content", "(optional)"], { isSerialized: false, initialEvent: 'optional initial event name' });
 ```
 
 ### Server:

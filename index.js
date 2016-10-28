@@ -14,6 +14,7 @@ class SSE extends EventEmitter {
   /**
    * Creates a new Server-Sent Event instance
    * @param [array] initial Initial value(s) to be served through SSE
+   * @param [object] options SSE options
    */
   constructor(initial, options) {
     super();
@@ -38,7 +39,7 @@ class SSE extends EventEmitter {
    */
   init(req, res) {
     let id = 0;
-    req.socket.setTimeout(Number.MAX_SAFE_INTEGER || Infinity);
+    req.socket.setTimeout(Number.MAX_SAFE_INTEGER);
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
@@ -47,7 +48,7 @@ class SSE extends EventEmitter {
     // Increase number of event listeners on init
     this.setMaxListeners(this.getMaxListeners() + 2);
 
-    this.on('data', data => {
+    const dataListener = data => {
       if (data.id) {
         res.write(`id: ${data.id}\n`);
       } else {
@@ -58,29 +59,33 @@ class SSE extends EventEmitter {
         res.write(`event: ${data.event}\n`);
       }
       res.write(`data: ${JSON.stringify(data.data)}\n\n`);
-    });
+    };
 
-    this.on('serialize', data => {
+    const serializeListener = data => {
       const serializeSend = data.reduce((all, msg) => {
         all += `id: ${id}\ndata: ${JSON.stringify(msg)}\n\n`;
         id += 1;
         return all;
       }, '');
       res.write(serializeSend);
-    });
+    };
+
+    this.on('data', dataListener);
+
+    this.on('serialize', serializeListener);
 
     if (this.initial) {
       if (this.options.isSerialized) {
         this.serialize(this.initial);
-      } else {
+      } else if (this.initial.length > 0) {
         this.send(this.initial, this.options.initialEvent || false);
       }
     }
 
     // Remove listeners and reduce the number of max listeners on client disconnect
     req.on('close', () => {
-      this.removeAllListeners('data');
-      this.removeAllListeners('serialize');
+      this.removeListener('data', dataListener);
+      this.removeListener('serialize', serializeListener);
       this.setMaxListeners(this.getMaxListeners() - 2);
     });
   }
@@ -91,6 +96,13 @@ class SSE extends EventEmitter {
    */
   updateInit(data) {
     this.initial = Array.isArray(data) ? data : [data];
+  }
+
+  /**
+   * Empty the data initially served by the SSE stream
+   */
+  dropInit() {
+    this.initial = [];
   }
 
   /**

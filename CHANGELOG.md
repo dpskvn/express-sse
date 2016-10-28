@@ -1,4 +1,13 @@
 # Changelog
+# 0.4.1
+## Added:
+* `dropInit` method
+* more tests
+
+# Fixed:
+* event listener handling
+* don't send an empty array on initial event for `isSerialized = false`
+
 # 0.4.0
 ## Added:
 * `serialize` method

@@ -28,7 +28,7 @@ describe('express-sse', () => {
 
     setTimeout(() => {
       sse.send('test message');
-    }, 500);
+    }, 100);
 
     es.onmessage = e => {
       JSON.parse(e.data).should.equal('test message');
@@ -45,7 +45,7 @@ describe('express-sse', () => {
 
     setTimeout(() => {
       sse.send('test message', 'custom event');
-    }, 500);
+    }, 100);
 
     es.addEventListener('custom event', event => {
       JSON.parse(event.data).should.equal('test message');
@@ -62,7 +62,7 @@ describe('express-sse', () => {
 
     setTimeout(() => {
       sse.send('test message', null, 1337);
-    }, 500);
+    }, 100);
 
     es.onmessage = e => {
       JSON.parse(e.data).should.equal('test message');
@@ -80,7 +80,7 @@ describe('express-sse', () => {
 
     setTimeout(() => {
       sse.serialize([1, 2, 3, 4, 5]);
-    }, 500);
+    }, 100);
 
     let counter = 0;
 
@@ -101,7 +101,7 @@ describe('express-sse', () => {
 
     setTimeout(() => {
       sse.serialize('test message');
-    }, 500);
+    }, 100);
 
     es.onmessage = e => {
       JSON.parse(e.data).should.equal('test message');
@@ -166,5 +166,71 @@ describe('express-sse', () => {
       es.close();
       done();
     };
+  });
+
+  it('should update initial data even if a non-array is passed', done => {
+    const sse = new SSE(null);
+    app.get('/', sse.init);
+
+    sse.updateInit(1);
+
+    const es = new EventSource('http://localhost:3000/');
+
+    es.onmessage = e => {
+      JSON.parse(e.data).should.equal(1);
+      es.close();
+      done();
+    };
+  });
+
+  it('should allow dropping the initial data', done => {
+    const sse = new SSE([1, 2, 3]);
+    app.get('/', sse.init);
+
+    sse.dropInit();
+
+    setTimeout(() => {
+      sse.send(1);
+    }, 100);
+
+    const es = new EventSource('http://localhost:3000/');
+
+    es.onmessage = e => {
+      JSON.parse(e.data).should.equal(1);
+      es.close();
+      done();
+    };
+  });
+
+  it('should not send an event for an empty array if isSerialized is false', done => {
+    const sse = new SSE([1, 2, 3], { isSerialized: false });
+    app.get('/', sse.init);
+
+    sse.dropInit();
+
+    setTimeout(() => {
+      sse.send(1);
+    }, 100);
+
+    const es = new EventSource('http://localhost:3000/');
+
+    es.onmessage = e => {
+      JSON.parse(e.data).should.equal(1);
+      es.close();
+      done();
+    };
+  });
+
+  it('should send a custom initial event if the option is defined', done => {
+    const sse = new SSE([1, 2, 3], { isSerialized: false, initialEvent: 'custom initial event' });
+    app.get('/', sse.init);
+
+    const es = new EventSource('http://localhost:3000');
+
+    es.addEventListener('custom initial event', event => {
+      event.data.should.equal(JSON.stringify([1, 2, 3]));
+      es.close();
+      done();
+    });
   });
 });
