@@ -7,6 +7,10 @@ express-sse
 
 An Express middleware for quick'n'easy server-sent events.
 
+## Demo
+[Available here](https://express-sse-demo.now.sh/)
+
+
 ## About
 `express-sse` is meant to keep things simple. You need to send server-sent events without too many complications and fallbacks? This is the library to do so.
 
