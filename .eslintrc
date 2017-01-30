@@ -1,12 +1,9 @@
 {
-  "extends": ["airbnb"],
+  "extends": ["airbnb-base"],
   "env": {
     "browser": true,
     "node": true
   },
-  "plugins": [
-    "mocha"
-  ],
   "rules": {
     "arrow-parens": ["error", "as-needed"],
     "no-param-reassign": 0,
