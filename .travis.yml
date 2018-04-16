@@ -10,8 +10,8 @@ node_js:
 before_script:
 - npm install -g istanbul
 - npm install -g mocha
-- npm install -g codeclimate-test-reporter
+- npm install -g codecov
 
 after_success:
-  - istanbul cover _mocha -- -R spec ./test/*.js
-  - codeclimate-test-reporter < ./coverage/lcov.info
+  - istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*.js
+  - codecov
