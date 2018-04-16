@@ -39,7 +39,9 @@ class SSE extends EventEmitter {
    */
   init(req, res) {
     let id = 0;
-    req.socket.setTimeout(Number.MAX_SAFE_INTEGER);
+    req.socket.setTimeout(0);
+    req.socket.setNoDelay(true);
+    req.socket.setKeepAlive(true);
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
