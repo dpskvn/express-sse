@@ -46,6 +46,9 @@ class SSE extends EventEmitter {
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
+    if (this.options.isCompressed) {
+      res.setHeader('Content-Encoding', 'deflate');
+    }
 
     // Increase number of event listeners on init
     this.setMaxListeners(this.getMaxListeners() + 2);
