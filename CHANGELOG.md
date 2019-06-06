@@ -1,10 +1,24 @@
 # Changelog
+# 0.5.1
+## Added
+* HTTP/2 does not read connection headers
+
+## Fixed:
+* security update in `yarn.lock`
+
+# 0.5.0
+## Added:
+* compression support with `isCompressed` option
+
+## Fixed:
+* TimeoutOverflowWarning
+
 # 0.4.1
 ## Added:
 * `dropInit` method
 * more tests
 
-# Fixed:
+## Fixed:
 * event listener handling
 * don't send an empty array on initial event for `isSerialized = false`
 
