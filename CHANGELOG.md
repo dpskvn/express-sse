@@ -1,4 +1,8 @@
 # Changelog
+# 0.5.2
+## Fixed:
+* node 4 and 5 support
+
 # 0.5.1
 ## Added
 * HTTP/2 does not read connection headers

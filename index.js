@@ -4,7 +4,7 @@
  * Require the module dependencies
  */
 
-const { EventEmitter } = require('events');
+const EventEmitter = require('events').EventEmitter;
 
 /**
  * Server-Sent Event instance class
