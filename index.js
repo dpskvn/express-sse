@@ -67,6 +67,7 @@ class SSE extends EventEmitter {
         res.write(`event: ${data.event}\n`);
       }
       res.write(`data: ${JSON.stringify(data.data)}\n\n`);
+      res.flush();
     };
 
     const serializeListener = data => {
