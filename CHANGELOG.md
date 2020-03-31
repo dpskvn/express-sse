@@ -1,4 +1,8 @@
 # Changelog
+# 0.5.3
+## Fixed:
+* compression support
+
 # 0.5.2
 ## Fixed:
 * node 4 and 5 support
