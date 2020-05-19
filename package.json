@@ -6,7 +6,8 @@
   "scripts": {
     "pretest": "npm run build",
     "test": "mocha -R spec test/",
-    "build": "tsup index.ts --bundle --dts"
+    "build": "tsup index.ts --bundle --dts",
+    "release": "standard-version"
   },
   "files": [
     "dist"
@@ -36,6 +37,7 @@
     "eventsource": "^1.0.7",
     "express": "^4.17.1",
     "mocha": "^7.1.2",
+    "standard-version": "8.0.0",
     "tsup": "1.4.16",
     "typescript": "3.9.2"
   }
