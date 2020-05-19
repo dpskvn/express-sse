@@ -2,10 +2,15 @@
   "name": "express-sse",
   "version": "0.5.3",
   "description": "An Express middleware for Server-Sent Events (EventSource)",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "mocha -R spec test/"
+    "pretest": "npm run build",
+    "test": "mocha -R spec test/",
+    "build": "tsup index.ts --bundle --dts"
   },
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/dpskvn/express-sse.git"
@@ -26,12 +31,12 @@
   },
   "homepage": "https://github.com/dpskvn/express-sse",
   "devDependencies": {
-    "chai": "^3.5.0",
-    "eslint": "^4.18.2",
-    "eslint-config-airbnb-base": "^11.0.1",
-    "eslint-plugin-import": "^2.2.0",
-    "eventsource": "^0.2.1",
-    "express": "^4.14.0",
-    "mocha": "^3.1.2"
+    "@types/express": "4.17.6",
+    "chai": "^4.2.0",
+    "eventsource": "^1.0.7",
+    "express": "^4.17.1",
+    "mocha": "^7.1.2",
+    "tsup": "1.4.16",
+    "typescript": "3.9.2"
   }
 }
