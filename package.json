@@ -5,6 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "pretest": "npm run build",
+    "prepack": "npm run build",
+    "prepare": "npm run build",
     "test": "mocha -R spec test/",
     "build": "tsup index.ts --bundle --dts",
     "release": "standard-version"
