@@ -1,11 +1,8 @@
-'use strict';
-
 require('chai').should();
 
 const express = require('express');
 const EventSource = require('eventsource');
-
-const SSE = require('../index');
+const { SSE } = require('../dist/index');
 
 describe('express-sse', () => {
   let app;
@@ -30,11 +27,11 @@ describe('express-sse', () => {
       sse.send('test message');
     }, 100);
 
-    es.onmessage = e => {
-      JSON.parse(e.data).should.equal('test message');
+    es.addEventListener('message', event => {
+      JSON.parse(event.data).should.equal('test message');
       es.close();
       done();
-    };
+    });
   });
 
   it('should allow sending custom events', done => {
@@ -64,12 +61,12 @@ describe('express-sse', () => {
       sse.send('test message', null, 1337);
     }, 100);
 
-    es.onmessage = e => {
-      JSON.parse(e.data).should.equal('test message');
-      e.lastEventId.should.equal('1337');
+    es.addEventListener('message', event => {
+      JSON.parse(event.data).should.equal('test message');
+      event.lastEventId.should.equal('1337');
       es.close();
       done();
-    };
+    });
   });
 
   it('should allow for serialization of arrays', done => {
@@ -84,13 +81,13 @@ describe('express-sse', () => {
 
     let counter = 0;
 
-    es.onmessage = e => {
+    es.addEventListener('message', () => {
       counter++;
       if (counter === 5) {
         es.close();
         done();
       }
-    };
+    });
   });
 
   it('should send a single event if a non-array is passed to serialize', done => {
@@ -103,11 +100,11 @@ describe('express-sse', () => {
       sse.serialize('test message');
     }, 100);
 
-    es.onmessage = e => {
-      JSON.parse(e.data).should.equal('test message');
+    es.addEventListener('message', event => {
+      JSON.parse(event.data).should.equal('test message');
       es.close();
       done();
-    };
+    });
   });
 
   it('should serve initial data', done => {
@@ -116,11 +113,11 @@ describe('express-sse', () => {
 
     const es = new EventSource('http://localhost:3000/');
 
-    es.onmessage = e => {
-      JSON.parse(e.data).should.equal('initial message');
+    es.addEventListener('message', event => {
+      JSON.parse(event.data).should.equal('initial message');
       es.close();
       done();
-    };
+    });
   });
 
   it('should serialize initial data by default (isSerialized = true)', done => {
@@ -131,13 +128,13 @@ describe('express-sse', () => {
 
     let counter = 0;
 
-    es.onmessage = e => {
+    es.addEventListener('message', () => {
       counter++;
       if (counter === 5) {
         es.close();
         done();
       }
-    };
+    });
   });
 
   it('should send initial data as array if isSerialized is false', done => {
@@ -146,11 +143,11 @@ describe('express-sse', () => {
 
     const es = new EventSource('http://localhost:3000/');
 
-    es.onmessage = e => {
-      e.data.should.equal(JSON.stringify([1, 2, 3, 4, 5]));
+    es.addEventListener('message', event => {
+      event.data.should.equal(JSON.stringify([1, 2, 3, 4, 5]));
       es.close();
       done();
-    };
+    });
   });
 
   it('should be able to update initial data', done => {
@@ -161,11 +158,11 @@ describe('express-sse', () => {
 
     const es = new EventSource('http://localhost:3000/');
 
-    es.onmessage = e => {
-      e.data.should.equal(JSON.stringify([1, 2, 3, 4, 5]));
+    es.addEventListener('message', event => {
+      event.data.should.equal(JSON.stringify([1, 2, 3, 4, 5]));
       es.close();
       done();
-    };
+    });
   });
 
   it('should update initial data even if a non-array is passed', done => {
@@ -176,11 +173,11 @@ describe('express-sse', () => {
 
     const es = new EventSource('http://localhost:3000/');
 
-    es.onmessage = e => {
-      JSON.parse(e.data).should.equal(1);
+    es.addEventListener('message', event => {
+      JSON.parse(event.data).should.equal(1);
       es.close();
       done();
-    };
+    });
   });
 
   it('should allow dropping the initial data', done => {
@@ -195,11 +192,11 @@ describe('express-sse', () => {
 
     const es = new EventSource('http://localhost:3000/');
 
-    es.onmessage = e => {
-      JSON.parse(e.data).should.equal(1);
+    es.addEventListener('message', event => {
+      JSON.parse(event.data).should.equal(1);
       es.close();
       done();
-    };
+    });
   });
 
   it('should not send an event for an empty array if isSerialized is false', done => {
@@ -214,11 +211,11 @@ describe('express-sse', () => {
 
     const es = new EventSource('http://localhost:3000/');
 
-    es.onmessage = e => {
-      JSON.parse(e.data).should.equal(1);
+    es.addEventListener('message', event => {
+      JSON.parse(event.data).should.equal(1);
       es.close();
       done();
-    };
+    });
   });
 
   it('should send a custom initial event if the option is defined', done => {
