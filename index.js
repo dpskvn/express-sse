@@ -66,13 +66,13 @@ class SSE extends EventEmitter {
       if (data.event) {
         res.write(`event: ${data.event}\n`);
       }
-      res.write(`data: ${JSON.stringify(data.data)}\n\n`);
+      res.write(`data: ${this.stringify(data.data)}\n\n`);
       res.flush();
     };
 
     const serializeListener = data => {
       const serializeSend = data.reduce((all, msg) => {
-        all += `id: ${id}\ndata: ${JSON.stringify(msg)}\n\n`;
+        all += `id: ${id}\ndata: ${this.stringify(msg)}\n\n`;
         id += 1;
         return all;
       }, '');
@@ -134,6 +134,14 @@ class SSE extends EventEmitter {
     } else {
       this.send(data);
     }
+  }
+  
+  stringify(val) {
+    if (typeof val === 'object') {
+      return JSON.stringify(val);
+    }
+    
+    return val;
   }
 }
 
