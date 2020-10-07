@@ -137,11 +137,11 @@ class SSE extends EventEmitter {
   }
   
   stringify(val) {
-    if (typeof val === 'string') {
-      return val;
+    if (typeof val === 'object') {
+      return JSON.stringify(val);
     }
     
-    return JSON.stringify(val)
+    return val;
   }
 }
 
