@@ -25,11 +25,11 @@ class SSE extends EventEmitter {
       this.initial = [];
     }
 
-    if (options) {
-      this.options = options;
-    } else {
-      this.options = { isSerialized: true };
-    }
+    this.options = {
+      isSerialized: true,
+      jsonData: true,
+      ...options
+    };
 
     this.init = this.init.bind(this);
   }
@@ -66,13 +66,15 @@ class SSE extends EventEmitter {
       if (data.event) {
         res.write(`event: ${data.event}\n`);
       }
-      res.write(`data: ${JSON.stringify(data.data)}\n\n`);
+      const _data = this.options.jsonData ? JSON.stringify(data.data) : data.data;
+      res.write(`data: ${_data}\n\n`);
       res.flush();
     };
 
     const serializeListener = data => {
       const serializeSend = data.reduce((all, msg) => {
-        all += `id: ${id}\ndata: ${JSON.stringify(msg)}\n\n`;
+        const _msg = this.options.jsonData ? JSON.stringify(msg) : msg;
+        all += `id: ${id}\ndata: ${_msg}\n\n`;
         id += 1;
         return all;
       }, '');
