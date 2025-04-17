@@ -1,4 +1,7 @@
 # Changelog
+# 1.0.0
+Add ESM support and TypeScript definitions
+
 # 0.6.0
 ## Fixed:
 * use res.flush() only on old versions of Node

@@ -1,10 +1,10 @@
-'use strict';
+
 
 /**
  * Require the module dependencies
  */
 
-const EventEmitter = require('events').EventEmitter;
+import { EventEmitter } from 'events';
 
 /**
  * Server-Sent Event instance class
@@ -146,6 +146,4 @@ class SSE extends EventEmitter {
   }
 }
 
-module.exports = SSE;
-// This line allows default export to work when transformed to ESM
-module.exports.default = module.exports;
+export default SSE;

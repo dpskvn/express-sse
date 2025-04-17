@@ -2,7 +2,6 @@
 
 const express = require('express');
 const EventSource = require('eventsource');
-const http = require('http');
 
 const SSE = require('../index');
 
