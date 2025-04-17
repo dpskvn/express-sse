@@ -27,7 +27,18 @@
   },
   "homepage": "https://github.com/dpskvn/express-sse",
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=16.0.0"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "require": "./index.js",
+      "types": "./index.d.ts"
+    }
   },
   "devDependencies": {
     "eslint": "^8.57.1",
