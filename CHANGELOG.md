@@ -1,4 +1,9 @@
 # Changelog
+# 0.6.0
+## Fixed:
+* use res.flush() only on old versions of Node
+* moved tests to jest
+
 # 0.5.3
 ## Fixed:
 * compression support
