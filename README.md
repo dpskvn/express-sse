@@ -1,7 +1,7 @@
 express-sse
 ============
 
-[![npm version](https://badge.fury.io/js/express-sse.svg)](https://badge.fury.io/js/express-sse)  [![Build Status](https://travis-ci.org/dpskvn/express-sse.svg?branch=master)](https://travis-ci.org/dpskvn/express-sse)  [![Code Climate](https://codeclimate.com/github/dpskvn/express-sse/badges/gpa.svg)](https://codeclimate.com/github/dpskvn/express-sse)  [![codecov](https://codecov.io/gh/dpskvn/express-sse/branch/master/graph/badge.svg)](https://codecov.io/gh/dpskvn/express-sse)
+[![npm version](https://badge.fury.io/js/express-sse.svg)](https://badge.fury.io/js/express-sse)
 
 [![NPM](https://nodei.co/npm/express-sse.png?downloads=true)](https://nodei.co/npm/express-sse/)
 
