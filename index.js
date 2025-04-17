@@ -67,7 +67,11 @@ class SSE extends EventEmitter {
         res.write(`event: ${data.event}\n`);
       }
       res.write(`data: ${JSON.stringify(data.data)}\n\n`);
-      res.flush();
+      if (typeof res.flushHeaders === 'function') {
+        res.flushHeaders();
+      } else if (typeof res.flush === 'function') {
+        res.flush();
+      }
     };
 
     const serializeListener = data => {
@@ -77,6 +81,11 @@ class SSE extends EventEmitter {
         return all;
       }, '');
       res.write(serializeSend);
+      if (typeof res.flushHeaders === 'function') {
+        res.flushHeaders();
+      } else if (typeof res.flush === 'function') {
+        res.flush();
+      }
     };
 
     this.on('data', dataListener);
